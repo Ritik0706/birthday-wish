@@ -1131,16 +1131,19 @@
 				// Get all flip cards
 				const flipCards = document.querySelectorAll('.flip-card');
 
-				// Loop through each flip card and add event listeners
-				flipCards.forEach(card => {
-    					card.addEventListener('touchstart', () => {
-        				card.classList.add('touch-active'); // Add class to flip card on touch
-    					});
+				if ('ontouchstart' in window) {
+    				// Only add touch event listeners on mobile
+    				flipCards.forEach(card => {
+        				card.addEventListener('touchstart', () => {
+            				card.classList.add('touch-active');
+        				});
 
-    					card.addEventListener('touchend', () => {
-        				card.classList.remove('touch-active'); // Remove class to reset on touch end
-    					});
-				});
+        				card.addEventListener('touchend', () => {
+            					card.classList.remove('touch-active');
+        				});
+    				});
+				}
+
 
 			}
 
