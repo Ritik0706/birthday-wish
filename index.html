@@ -260,6 +260,10 @@
 				transform: rotateY(180deg);
 			}
 
+			.flip-card:hover .flip-card-inner {
+				transform: rotateY(180deg);
+			}
+
 			/* Floating animations */
 			.floating-element {
 				position: absolute;
@@ -1109,16 +1113,16 @@
 			}
 
 			function flipCard(id) {
-				const card = document.getElementById(`card-${id}`).parentElement;
-				card.classList.toggle('flipped');
+				// const card = document.getElementById(`card-${id}`).parentElement;
+				// card.classList.toggle('flipped');
 
 				// Create emoji pop animation
-				if (card.classList.contains('flipped')) {
+				// if (card.classList.contains('flipped')) {
 					const moment = moments.find((m) => m.id === id);
 					if (moment) {
 						createFloatingEmoji(moment.emoji);
 					}
-				}
+				// }
 			}
 
 			function createPageLoadEmojis() {
