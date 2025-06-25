@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Happy Birthday Beautiful ✨</title>
+		<meta
+			name="description"
+			content="A magical birthday wish for someone special"
+		/>
+
+		<!-- Bootstrap CSS -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+		/>
+
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Pacifico&display=swap"
+			rel="stylesheet"
+		/>
+
+		<!-- Three.js for 3D flowers -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+		<style>
+			/* Design System Colors */
+			:root {
+				--lavender: hsl(270, 50%, 85%);
+				--lavender-light: hsl(270, 60%, 92%);
+				--pink: hsl(330, 80%, 85%);
+				--pink-light: hsl(330, 90%, 92%);
+				--rose-gold: hsl(20, 30%, 75%);
+				--rose-gold-light: hsl(20, 40%, 85%);
+				--magical: hsl(280, 100%, 90%);
+				--slate-700: hsl(215, 25%, 27%);
+			}
+
+			body {
+				font-family: 'Dancing Script', cursive;
+				margin: 0;
+				padding: 0;
+				overflow-x: hidden;
+			}
+
+			.font-dancing {
+				font-family: 'Dancing Script', cursive;
+			}
+
+			.font-pacifico {
+				font-family: 'Pacifico', cursive;
+			}
+
+			/* Section base styles */
+			.section {
+				min-height: 100vh;
+				position: relative;
+				overflow: hidden;
+			}
+
+			/* Landing Section */
+			.landing-section {
+				background: linear-gradient(
+					135deg,
+					var(--lavender-light),
+					var(--pink-light),
+					var(--magical)
+				);
+			}
+
+			/* Favorite Moments Section */
+			.moments-section {
+				background: linear-gradient(
+					135deg,
+					var(--magical),
+					var(--lavender-light),
+					var(--pink-light)
+				);
+			}
+
+			/* Flower Blooming Section */
+			.flower-section {
+				background: linear-gradient(
+					135deg,
+					var(--rose-gold-light),
+					var(--pink-light),
+					var(--lavender-light)
+				);
+			}
+
+			/* Fireworks Section */
+			.fireworks-section {
+				background: linear-gradient(180deg, #2d1b69, #553c9a, #2d1b69);
+			}
+
+			/* Photo Collage Section */
+			.photo-section {
+				background: linear-gradient(
+					135deg,
+					var(--pink-light),
+					var(--lavender-light),
+					var(--magical)
+				);
+			}
+
+			/* Final Surprise Section */
+			.final-section {
+				background: linear-gradient(
+					135deg,
+					var(--magical),
+					var(--pink-light),
+					var(--lavender-light)
+				);
+			}
+
+			/* Animation utilities */
+			.fade-in {
+				animation: fadeIn 1s ease-out forwards;
+				opacity: 0;
+			}
+
+			.scale-in {
+				animation: scaleIn 0.5s ease-out forwards;
+				opacity: 0;
+			}
+
+			.slide-up {
+				animation: slideUp 0.8s ease-out forwards;
+				opacity: 0;
+			}
+
+			@keyframes fadeIn {
+				from {
+					opacity: 0;
+					transform: translateY(30px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			@keyframes scaleIn {
+				from {
+					opacity: 0;
+					transform: scale(0.8);
+				}
+				to {
+					opacity: 1;
+					transform: scale(1);
+				}
+			}
+
+			@keyframes slideUp {
+				from {
+					opacity: 0;
+					transform: translateY(50px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			@keyframes twinkle {
+				0%,
+				100% {
+					opacity: 0;
+				}
+				50% {
+					opacity: 1;
+				}
+			}
+
+			@keyframes pulse {
+				0%,
+				100% {
+					transform: scale(1);
+				}
+				50% {
+					transform: scale(1.1);
+				}
+			}
+
+			/* Button styles */
+			.btn-magical {
+				background: linear-gradient(45deg, var(--pink), var(--lavender));
+				border: none;
+				color: white;
+				font-family: 'Pacifico', cursive;
+				font-size: 1.2rem;
+				padding: 12px 30px;
+				border-radius: 50px;
+				box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+				transition: all 0.3s ease;
+			}
+
+			.btn-magical:hover {
+				transform: scale(1.05);
+				box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+				background: linear-gradient(45deg, var(--pink), var(--magical));
+				color: white;
+			}
+
+			/* Card flip styles */
+			.flip-card {
+				background-color: transparent;
+				perspective: 1000px;
+				height: 300px;
+			}
+
+			.flip-card-inner {
+				position: relative;
+				width: 100%;
+				height: 100%;
+				text-align: center;
+				transition: transform 0.6s;
+				transform-style: preserve-3d;
+				cursor: pointer;
+			}
+
+			.flip-card.flipped .flip-card-inner {
+				transform: rotateY(180deg);
+			}
+
+			.flip-card-front,
+			.flip-card-back {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				-webkit-backface-visibility: hidden;
+				backface-visibility: hidden;
+				border-radius: 15px;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				padding: 20px;
+				box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+				border: 2px solid rgba(330, 80%, 85%, 0.3);
+			}
+
+			.flip-card-front {
+				background: linear-gradient(
+					135deg,
+					rgba(330, 80%, 85%, 0.2),
+					rgba(270, 50%, 85%, 0.2)
+				);
+			}
+
+			.flip-card-back {
+				background: linear-gradient(
+					135deg,
+					rgba(270, 50%, 85%, 0.3),
+					rgba(330, 80%, 85%, 0.3)
+				);
+				transform: rotateY(180deg);
+			}
+
+			/* Floating animations */
+			.floating-element {
+				position: absolute;
+				pointer-events: none;
+				animation: float 8s infinite linear;
+			}
+
+			@keyframes float {
+				from {
+					transform: translateY(100vh) translateX(0) rotate(0deg);
+					opacity: 0.7;
+				}
+				to {
+					transform: translateY(-100px) translateX(50px) rotate(360deg);
+					opacity: 0;
+				}
+			}
+
+			/* 3D Photo grid styles */
+			.photo-container {
+				perspective: 1000px;
+				perspective-origin: center center;
+			}
+
+			.photo-card {
+				cursor: pointer;
+				transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+				transform-origin: center center;
+				transform-style: preserve-3d;
+				position: relative;
+				overflow: hidden;
+				border-radius: 20px;
+				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+			}
+
+			.photo-card:hover {
+				transform: scale(1.1) rotateY(15deg) rotateX(10deg) translateZ(50px);
+				z-index: 20;
+				box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+			}
+
+			.photo-card img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				border-radius: 20px;
+				transition: all 0.6s ease;
+				filter: brightness(0.9) contrast(1.1);
+			}
+
+			.photo-card:hover img {
+				filter: brightness(1.1) contrast(1.2) saturate(1.2);
+				transform: scale(1.05);
+			}
+
+			.photo-overlay {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: linear-gradient(
+					135deg,
+					rgba(255, 182, 193, 0.8),
+					rgba(221, 160, 221, 0.8)
+				);
+				opacity: 0;
+				transition: all 0.6s ease;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 20px;
+			}
+
+			.photo-card:hover .photo-overlay {
+				opacity: 1;
+				backdrop-filter: blur(2px);
+			}
+
+			.photo-caption {
+				color: white;
+				font-family: 'Pacifico', cursive;
+				font-size: 1.2rem;
+				text-align: center;
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+				transform: translateY(20px);
+				transition: transform 0.6s ease;
+			}
+
+			.photo-card:hover .photo-caption {
+				transform: translateY(0);
+			}
+
+			/* 3D Floating elements for photos */
+			.floating-photo-element {
+				position: absolute;
+				pointer-events: none;
+				animation: floatPhoto 12s infinite linear;
+				opacity: 0.6;
+				font-size: 2rem;
+			}
+
+			@keyframes floatPhoto {
+				0% {
+					transform: translateY(100vh) translateX(0) rotateZ(0deg) rotateY(0deg);
+					opacity: 0;
+				}
+				10% {
+					opacity: 0.8;
+				}
+				90% {
+					opacity: 0.8;
+				}
+				100% {
+					transform: translateY(-100px) translateX(100px) rotateZ(360deg)
+						rotateY(360deg);
+					opacity: 0;
+				}
+			}
+
+			/* Photo section 3D grid */
+			.photo-grid-3d {
+				display: grid;
+				gap: 2rem;
+				padding: 2rem;
+				transform-style: preserve-3d;
+			}
+
+			/* Responsive grid */
+			@media (min-width: 1200px) {
+				.photo-grid-3d {
+					grid-template-columns: repeat(3, 1fr);
+					gap: 3rem;
+				}
+			}
+
+			@media (min-width: 768px) and (max-width: 1199px) {
+				.photo-grid-3d {
+					grid-template-columns: repeat(2, 1fr);
+					gap: 2rem;
+				}
+			}
+
+			@media (max-width: 767px) {
+				.photo-grid-3d {
+					grid-template-columns: 1fr;
+					gap: 1.5rem;
+					padding: 1rem;
+				}
+
+				.photo-card {
+					max-width: 300px;
+					margin: 0 auto;
+				}
+
+				.photo-card:hover {
+					transform: scale(1.05) rotateY(8deg) rotateX(5deg) translateZ(20px);
+				}
+			}
+
+			/* Photo card aspect ratio */
+			.photo-aspect {
+				aspect-ratio: 1;
+				width: 100%;
+				height: auto;
+			}
+
+			/* Enhanced mobile responsiveness */
+			@media (max-width: 480px) {
+				.photo-grid-3d {
+					padding: 0.5rem;
+					gap: 1rem;
+				}
+
+				.photo-caption {
+					font-size: 1rem;
+				}
+			}
+
+			/* Canvas styles */
+			canvas {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				pointer-events: none;
+			}
+
+			/* Text colors */
+			.text-slate-700 {
+				color: var(--slate-700);
+			}
+
+			.text-pink-light {
+				color: var(--pink-light);
+			}
+
+			.text-lavender-light {
+				color: var(--lavender-light);
+			}
+
+			.text-rose-gold-light {
+				color: var(--rose-gold-light);
+			}
+
+			/* Music player */
+			.music-player {
+				position: fixed;
+				top: 20px;
+				left: 20px;
+				z-index: 1000;
+				background: rgba(255, 255, 255, 0.8);
+				backdrop-filter: blur(10px);
+				border: 2px solid rgba(330, 80%, 85%, 0.3);
+				border-radius: 10px;
+				padding: 10px 15px;
+				cursor: pointer;
+				transition: all 0.3s ease;
+			}
+
+			.music-player:hover {
+				transform: scale(1.05);
+				background: rgba(255, 255, 255, 0.9);
+			}
+
+			/* Hidden sections initially */
+			.section:not(.active) {
+				display: none;
+			}
+
+			.section.active {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+
+			/* Heart burst animation */
+			.heart-burst {
+				animation: heartBurst 2s ease-out forwards;
+			}
+
+			@keyframes heartBurst {
+				0% {
+					opacity: 1;
+					transform: scale(1) translateY(0);
+				}
+				100% {
+					opacity: 0;
+					transform: scale(2) translateY(-300px) rotate(360deg);
+				}
+			}
+
+			/* Responsive adjustments */
+			@media (max-width: 768px) {
+				.display-1 {
+					font-size: 2.5rem;
+				}
+				.display-2 {
+					font-size: 2rem;
+				}
+				.display-3 {
+					font-size: 1.8rem;
+				}
+				.btn-magical {
+					font-size: 1rem;
+					padding: 10px 25px;
+				}
+				.flip-card {
+					height: 250px;
+				}
+			}
+
+			/* Music */
+			/* Overlay background */
+			.overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				z-index: 9999;
+			}
+
+			/* Popup box */
+			.popup {
+				background: white;
+				padding: 20px;
+				max-width: 90%;
+				width: 400px;
+				border-radius: 10px;
+				text-align: center;
+			}
+
+			.popup h2 {
+				margin-top: 0;
+				font-size: 22px;
+			}
+
+			.popup p {
+				font-size: 16px;
+				margin: 15px 0;
+			}
+
+			.popup button {
+				background-color: #4caf50;
+				color: white;
+				border: none;
+				padding: 12px 20px;
+				font-size: 16px;
+				border-radius: 5px;
+				cursor: pointer;
+			}
+
+			.popup button:hover {
+				background-color: #45a049;
+			}
+
+			img {
+				pointer-events: none;
+				user-select: none;
+			}
+
+			/* Blur effect */
+			.blur {
+				filter: blur(8px);
+				transition: filter 0.3s ease;
+			}
+
+			@media (max-width: 480px) {
+				.popup {
+					width: 90%;
+					padding: 15px;
+				}
+
+				.popup h2 {
+					font-size: 18px;
+				}
+
+				.popup p {
+					font-size: 14px;
+				}
+
+				.popup button {
+					width: 100%;
+				}
+			}
+		</style>
+	</head>
+	<body oncontextmenu="return false;">
+		<!-- Overlay Popup -->
+		<div class="overlay" id="musicPopup">
+			<div class="popup">
+				<h2>Welcome!</h2>
+				<p>
+					Your birthday magic starts now! 🎂✨ Dive in and see what I've cooked
+					up for you! 🎉🎁
+				</p>
+				<button onclick="startMusic()">Start Music</button>
+			</div>
+		</div>
+		<div class="main-content" id="mainContent">
+			<!-- Music Player -->
+			<div class="music-player" onclick="toggleMusic()">
+				<span id="musicIcon">🔇</span> Music
+			</div>
+
+			<!-- Audio element -->
+			<audio
+				id="backgroundMusic"
+				src="music/happy-birthday-Starting.mp3"
+				loop
+			></audio>
+
+			<!-- Section 1: Landing -->
+			<section id="landing" class="section landing-section active">
+				<div
+					class="container-fluid h-100 d-flex align-items-center justify-content-center"
+				>
+					<div class="text-center">
+						<h1
+							class="display-1 font-dancing fw-bold text-slate-700 mb-4 fade-in"
+							style="animation-delay: 0.5s"
+						>
+							<span>Hey Beautiful,</span><br />
+							<span
+								class="text-gradient"
+								style="
+									background: linear-gradient(
+										45deg,
+										var(--pink),
+										var(--lavender)
+									);
+									-webkit-background-clip: text;
+									-webkit-text-fill-color: transparent;
+								"
+								>Your Day is Here ✨</span
+							>
+						</h1>
+						<button
+							class="btn btn-magical scale-in"
+							style="animation-delay: 2s"
+							onclick="nextSection()"
+						>
+							Go Ahead 💕
+						</button>
+					</div>
+				</div>
+				<!-- Floating hearts -->
+				<div id="floatingHearts"></div>
+				<!-- Animated butterflies -->
+				<div id="animatedButterflies"></div>
+			</section>
+
+			<!-- Section 2: Favorite Moments -->
+			<section id="moments" class="section moments-section">
+				<div class="container py-5">
+					<h2
+						class="display-3 font-dancing text-center text-slate-700 mb-5 fade-in"
+					>
+						Our Favorite Moments 💫
+					</h2>
+					<div class="row g-4" id="momentsCards">
+						<!-- Cards will be populated by JavaScript -->
+					</div>
+					<div class="text-center mt-5">
+						<button
+							class="btn btn-magical scale-in"
+							style="animation-delay: 1.5s"
+							onclick="nextSection()"
+						>
+							See Something Beautiful 🌸
+						</button>
+					</div>
+				</div>
+				<!-- Floating emojis container -->
+				<div id="floatingEmojis"></div>
+			</section>
+
+			<!-- Section 3: Flower Blooming -->
+			<section id="flowers" class="section flower-section">
+				<div id="flowerCanvas"></div>
+				<div
+					class="container-fluid h-100 d-flex align-items-center justify-content-center"
+				>
+					<div class="text-center" style="z-index: 10; position: relative">
+						<h2 class="display-3 font-dancing text-slate-700 mb-3 fade-in">
+							Like these flowers,
+						</h2>
+						<h3
+							class="display-4 font-dancing mb-4 fade-in"
+							style="color: #8b004f; animation-delay: 0.5s"
+						>
+							you've bloomed beautifully 🌸
+						</h3>
+						<p
+							class="lead text-slate-700 mb-4 fade-in"
+							style="animation-delay: 1s"
+						>
+							Each petal represents a moment of growth, every bloom a testament
+							to your incredible journey.
+						</p>
+						<button
+							class="btn btn-magical scale-in"
+							style="animation-delay: 1.5s"
+							onclick="nextSection()"
+						>
+							Light Up the Sky ✨
+						</button>
+					</div>
+				</div>
+				<!-- Floating petals -->
+				<div id="floatingPetals"></div>
+			</section>
+
+			<!-- Section 4: Fireworks -->
+			<section id="fireworks" class="section fireworks-section">
+				<canvas id="fireworksCanvas"></canvas>
+				<div
+					class="container-fluid h-100 d-flex align-items-center justify-content-center"
+				>
+					<div class="text-center" style="z-index: 10; position: relative">
+						<h2 class="display-2 font-dancing text-pink-light mb-4 fade-in">
+							Happy Birthday Beautiful! 🎉
+						</h2>
+						<p
+							class="h4 text-lavender-light mb-3 fade-in"
+							style="animation-delay: 0.5s"
+						>
+							Just like these fireworks light up the sky, you light up every
+							room you enter
+						</p>
+						<p
+							class="h5 text-rose-gold-light mb-4 fade-in"
+							style="animation-delay: 1s"
+						>
+							Happy Birthday to the drama queen, beauty queen, and snack queen
+							all in one — Krutika! 💅👑 You’re a walking sparkle, a hug in
+							human form, and lowkey the reason we all smile more. Never change
+							(unless it's outfits — keep those coming). Love you tons, you
+							legend! 💖🎉 #SlayDay #KrutikaMagic
+						</p>
+						<button
+							class="btn btn-magical scale-in"
+							style="animation-delay: 1.5s"
+							onclick="nextSection()"
+						>
+							One More Surprise 💫
+						</button>
+					</div>
+				</div>
+				<!-- Stars background -->
+				<div id="starsBackground"></div>
+			</section>
+
+			<!-- Section 5: Photo Collage -->
+			<section id="photos" class="section photo-section">
+				<div class="container py-5">
+					<h2
+						class="display-3 font-dancing text-center text-slate-700 mb-5 fade-in"
+					>
+						Beautiful Memories 📸
+					</h2>
+					<div class="row g-4" id="photoGrid">
+						<!-- Photos will be populated by JavaScript -->
+					</div>
+					<div class="text-center mt-5">
+						<button
+							class="btn btn-magical scale-in"
+							style="animation-delay: 1s"
+							onclick="nextSection()"
+						>
+							Final Surprise 🌟
+						</button>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 6: Final Surprise -->
+			<section id="final" class="section final-section">
+				<div
+					class="container-fluid h-100 d-flex align-items-center justify-content-center"
+				>
+					<div class="text-center">
+						<div id="poet-section">
+							<h2 class="display-3 font-dancing text-slate-700 mb-4 fade-in">
+								✨ Birthday Verses for a Beautiful Soul 🌟
+							</h2>
+							<p
+								class="h5 text-slate-700 mb-5 fade-in"
+								style="animation-delay: 0.5s"
+							>
+								Roses are red, confetti is bright, Krutika's the star, lighting
+								up our night. Grace in her heart, laughter in her soul — Happy
+								birthday, beautiful girl, you’re pure gold! ✨🎂💖
+								#BirthdayQueen
+							</p>
+						</div>
+						<div id="surpriseContent">
+							<button
+								class="btn btn-magical scale-in"
+								style="animation-delay: 1s"
+								onclick="sendHug()"
+							>
+								Send Me a Hug 💌
+							</button>
+						</div>
+					</div>
+				</div>
+				<!-- Flying hearts container -->
+				<div id="flyingHearts"></div>
+				<!-- Background decorative elements -->
+				<div id="backgroundDecor"></div>
+			</section>
+		</div>
+		<!-- Bootstrap JS -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+		<script>
+			window.onload = function () {
+				// Apply blur on page load
+				document.getElementById('mainContent').classList.add('blur');
+			};
+
+			// Global variables
+			let currentSection = 0;
+			let isPlaying = false;
+			let sections = [
+				'landing',
+				'moments',
+				'flowers',
+				'fireworks',
+				'photos',
+				'final',
+			];
+
+			// Favorite moments data
+			const moments = [
+				{
+					id: 1,
+					title: 'Your Laugh',
+					memory:
+						"The way your eyes light up when you laugh - it's like watching sunshine break through clouds. Your joy is absolutely contagious and makes everything better.",
+					emoji: '😊',
+				},
+				{
+					id: 2,
+					title: 'Your Kindness',
+					memory:
+						'How you always think of others first. Your compassionate heart and gentle soul make you one of the most beautiful people I know.',
+					emoji: '💝',
+				},
+				{
+					id: 3,
+					title: 'Your Strength',
+					memory:
+						'The way you handle challenges with such grace and determination. You inspire me to be better every single day.',
+					emoji: '💪',
+				},
+				{
+					id: 4,
+					title: 'Your Dreams',
+					memory:
+						'Listening to you talk about your dreams and aspirations. Your passion and ambition are incredible to witness.',
+					emoji: '⭐',
+				},
+				{
+					id: 5,
+					title: 'Your Friendship',
+					memory:
+						"Every moment we've shared, every conversation, every laugh - they've all contributed to the amazing person you are today.",
+					emoji: '🤗',
+				},
+				{
+					id: 6,
+					title: 'Your Birthday',
+					memory:
+						"Happy birthday to the one who lights up every room — Krutika, you're pure sunshine with a heart of gold. ✨💖 #BirthdayQueen",
+					emoji: '🎂',
+				},
+			];
+
+			// Photo data
+			const photos = [
+				{
+					id: 1,
+					url: 'https://drive.google.com/thumbnail?id=1aq7TtQIG4K10udwkBS6H1Bm3o54K828K&sz=s400',
+					caption: 'Your beautiful smile',
+				},
+				{
+					id: 2,
+					url: 'https://drive.google.com/thumbnail?id=1faScBO53yhzpvnCNpyzwH3o4tFyIUqCF&sz=s400',
+					caption: 'Birthday queen 👑',
+				},
+				{
+					id: 3,
+					url: 'https://drive.google.com/thumbnail?id=1oKiwr1CRjqktmf2njwMvHZL0SPsYKXas&sz=s400',
+					caption: 'Happy moments',
+				},
+				{
+					id: 4,
+					url: 'https://drive.google.com/thumbnail?id=1ZJuEcmESlCe_3FHgjtBqD_fqX-jGZyAc&sz=s400',
+					caption: 'Your radiant energy',
+				},
+				{
+					id: 5,
+					url: 'https://drive.google.com/thumbnail?id=1Q9TnRzZ1pgagTJrzzZ_kmORDWHUrLEhu&sz=s400',
+					caption: 'Precious memories',
+				},
+				{
+					id: 6,
+					// https://drive.google.com/file/d/1oy9G5uJU10X_Ea3r2Ph7u2P9Dyy-n0it/view?usp=sharing
+					url: 'https://drive.google.com/thumbnail?id=1oy9G5uJU10X_Ea3r2Ph7u2P9Dyy-n0it&sz=s400',
+					// url: '/photos/photo-6.jpg',
+					caption: 'Your grace',
+				},
+			];
+
+			// Initialize the application
+			document.addEventListener('DOMContentLoaded', function () {
+				initializeSections();
+				createFloatingElements();
+				startAnimations();
+			});
+
+			// Section navigation
+			function nextSection() {
+				if (currentSection < sections.length - 1) {
+					document
+						.getElementById(sections[currentSection])
+						.classList.remove('active');
+					currentSection++;
+					document
+						.getElementById(sections[currentSection])
+						.classList.add('active');
+
+					// Initialize section-specific content
+					if (sections[currentSection] === 'moments') {
+						initializeMomentsSection();
+					} else if (sections[currentSection] === 'flowers') {
+						initializeFlowerSection();
+					} else if (sections[currentSection] === 'fireworks') {
+						initializeFireworksSection();
+					} else if (sections[currentSection] === 'photos') {
+						initializePhotoSection();
+					}
+				}
+			}
+
+			function restartJourney() {
+				document
+					.getElementById(sections[currentSection])
+					.classList.remove('active');
+				currentSection = 0;
+				document
+					.getElementById(sections[currentSection])
+					.classList.add('active');
+				// Reset surprise content
+				document.getElementById('surpriseContent').innerHTML = `
+			             <button class="btn btn-magical scale-in" style="animation-delay: 1s;" onclick="sendHug()">
+			                 Send Me a Hug 💌
+			             </button>
+			         `;
+			}
+
+			// Music player
+			const audio = document.getElementById('backgroundMusic');
+			const popup = document.getElementById('musicPopup');
+			const musicIcon = document.getElementById('musicIcon');
+
+			function startMusic() {
+				popup.style.display = 'none'; // Hide the popup
+				// Remove blur
+				document.getElementById('mainContent').classList.remove('blur');
+				audio
+					.play()
+					.then(() => {
+						musicIcon.textContent = '🎵'; //🔊
+					})
+					.catch((err) => {
+						console.warn('Autoplay failed:', err);
+					});
+			}
+
+			function toggleMusic() {
+				if (audio.paused) {
+					audio.play();
+					musicIcon.textContent = '🎵';
+				} else {
+					audio.pause();
+					musicIcon.textContent = '🔇';
+				}
+			}
+
+			// Initialize sections
+			function initializeSections() {
+				console.log('Sections initialized');
+			}
+
+			// Create floating elements for landing section
+			function createFloatingElements() {
+				createFloatingHearts();
+				createAnimatedButterflies();
+			}
+
+			function createFloatingHearts() {
+				const container = document.getElementById('floatingHearts');
+				for (let i = 0; i < 10; i++) {
+					setTimeout(() => {
+						const heart = document.createElement('div');
+						heart.className = 'floating-element';
+						heart.style.fontSize = '2rem';
+						heart.style.left = Math.random() * 100 + '%';
+						heart.style.animationDelay = Math.random() * 5 + 's';
+						heart.style.opacity = '0.3';
+						heart.style.color = 'var(--pink)';
+						heart.textContent = '💖';
+						container.appendChild(heart);
+
+						setTimeout(() => {
+							heart.remove();
+						}, 8000);
+					}, Math.random() * 5000);
+				}
+			}
+
+			function createAnimatedButterflies() {
+				const container = document.getElementById('animatedButterflies');
+				const butterflies = ['🦋', '🧚‍♀️', '✨', '💫'];
+
+				for (let i = 0; i < 8; i++) {
+					const butterfly = document.createElement('div');
+					butterfly.className = 'floating-element';
+					butterfly.style.fontSize = '1.5rem';
+					butterfly.style.left = Math.random() * 100 + '%';
+					butterfly.style.animationDelay = Math.random() * 3 + 's';
+					butterfly.style.animationDuration = 15 + Math.random() * 10 + 's';
+					butterfly.textContent =
+						butterflies[Math.floor(Math.random() * butterflies.length)];
+					container.appendChild(butterfly);
+				}
+			}
+
+			// Initialize moments section
+			function initializeMomentsSection() {
+				const container = document.getElementById('momentsCards');
+				container.innerHTML = '';
+
+				moments.forEach((moment, index) => {
+					const col = document.createElement('div');
+					col.className = 'col-md-6 col-lg-4';
+
+					col.innerHTML = `
+			                 <div class="flip-card fade-in" style="animation-delay: ${
+													index * 0.2
+												}s;" onclick="flipCard(${moment.id})">
+			                     <div class="flip-card-inner" id="card-${moment.id}">
+			                         <div class="flip-card-front">
+			                             <div style="font-size: 3rem; margin-bottom: 1rem;">${
+																			moment.emoji
+																		}</div>
+			                             <h3 class="font-dancing fw-semibold text-slate-700">${
+																			moment.title
+																		}</h3>
+			                         </div>
+			                         <div class="flip-card-back">
+			                             <p class="text-slate-700 fw-medium">${
+																			moment.memory
+																		}</p>
+			                         </div>
+			                     </div>
+			                 </div>
+			             `;
+
+					container.appendChild(col);
+				});
+
+				// Trigger page load emoji animations
+				setTimeout(() => {
+					createPageLoadEmojis();
+				}, 1000);
+			}
+
+			function flipCard(id) {
+				const card = document.getElementById(`card-${id}`).parentElement;
+				card.classList.toggle('flipped');
+
+				// Create emoji pop animation
+				if (card.classList.contains('flipped')) {
+					const moment = moments.find((m) => m.id === id);
+					if (moment) {
+						createFloatingEmoji(moment.emoji);
+					}
+				}
+			}
+
+			function createPageLoadEmojis() {
+				moments.forEach((moment, index) => {
+					setTimeout(() => {
+						createFloatingEmoji(moment.emoji);
+					}, index * 200);
+				});
+			}
+
+			function createFloatingEmoji(emoji) {
+				const container = document.getElementById('floatingEmojis');
+				const element = document.createElement('div');
+				element.style.position = 'fixed';
+				element.style.fontSize = '4rem';
+				element.style.zIndex = '1000';
+				element.style.pointerEvents = 'none';
+				element.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+				element.style.top = window.innerHeight * 0.6 + 'px';
+				element.textContent = emoji;
+
+				container.appendChild(element);
+
+				// Animate
+				element.animate(
+					[
+						{ opacity: 0, transform: 'scale(0.5) rotate(0deg)' },
+						{ opacity: 1, transform: 'scale(2) rotate(180deg)', offset: 0.3 },
+						{ opacity: 1, transform: 'scale(1.5) rotate(360deg)', offset: 0.7 },
+						{ opacity: 0, transform: 'scale(0) rotate(540deg)' },
+					],
+					{
+						duration: 2000,
+						easing: 'ease-out',
+					}
+				).onfinish = () => element.remove();
+			}
+
+			// Initialize flower section with 3D animations
+			function initializeFlowerSection() {
+				create3DFlowers();
+				createFloatingPetals();
+			}
+
+			// 3D Flower Scene with Three.js
+			function create3DFlowers() {
+				const container = document.getElementById('flowerCanvas');
+
+				// Create scene, camera, renderer
+				const scene = new THREE.Scene();
+				const camera = new THREE.PerspectiveCamera(
+					75,
+					window.innerWidth / window.innerHeight,
+					0.1,
+					1000
+				);
+				const renderer = new THREE.WebGLRenderer({
+					alpha: true,
+					antialias: true,
+				});
+
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				renderer.setClearColor(0x000000, 0); // Transparent background
+				container.appendChild(renderer.domElement);
+
+				// Add lights
+				const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
+				scene.add(ambientLight);
+
+				const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+				directionalLight.position.set(10, 10, 5);
+				scene.add(directionalLight);
+
+				const pointLight = new THREE.PointLight(0xffffff, 0.5);
+				pointLight.position.set(-10, -10, -5);
+				scene.add(pointLight);
+
+				// Create multiple blooming flowers
+				const flowers = [];
+				const flowerPositions = [
+					[0, 0, 0],
+					[-3, 1, -1],
+					[3, -1, -1],
+					[-2, -2, -2],
+					[2, 2, -2],
+				];
+
+				flowerPositions.forEach((position, index) => {
+					const flower = createBloomingFlower(
+						position,
+						0.6 + Math.random() * 0.4
+					);
+					flowers.push(flower);
+					scene.add(flower);
+				});
+
+				camera.position.z = 8;
+
+				// Animation loop
+				function animate() {
+					requestAnimationFrame(animate);
+
+					flowers.forEach((flower, index) => {
+						// Gentle rotation and floating movement
+						flower.rotation.y = Math.sin(Date.now() * 0.0005 + index) * 0.1;
+						flower.position.y =
+							flowerPositions[index][1] +
+							Math.sin(Date.now() * 0.0008 + index) * 0.1;
+
+						// Petal animation - make petals "breathe"
+						flower.children.forEach((child, childIndex) => {
+							if (
+								child.geometry &&
+								child.geometry.type === 'BoxGeometry' &&
+								childIndex > 2
+							) {
+								child.scale.setScalar(
+									1 + Math.sin(Date.now() * 0.002 + childIndex) * 0.05
+								);
+							}
+						});
+					});
+
+					// Auto-rotate scene slowly
+					scene.rotation.y += 0.0005;
+
+					renderer.render(scene, camera);
+				}
+				animate();
+
+				// Handle window resize
+				window.addEventListener('resize', () => {
+					camera.aspect = window.innerWidth / window.innerHeight;
+					camera.updateProjectionMatrix();
+					renderer.setSize(window.innerWidth, window.innerHeight);
+				});
+			}
+
+			function createBloomingFlower(position = [0, 0, 0], scale = 1) {
+				const flower = new THREE.Group();
+				flower.position.set(...position);
+				flower.scale.setScalar(scale);
+
+				// Flower stem
+				const stemGeometry = new THREE.CylinderGeometry(0.05, 0.08, 3, 8);
+				const stemMaterial = new THREE.MeshLambertMaterial({ color: 0x228b22 });
+				const stem = new THREE.Mesh(stemGeometry, stemMaterial);
+				stem.position.set(0, -1.5, 0);
+				flower.add(stem);
+
+				// Flower center
+				const centerGeometry = new THREE.SphereGeometry(0.2, 16, 16);
+				const centerMaterial = new THREE.MeshLambertMaterial({
+					color: 0xffd700,
+				});
+				const center = new THREE.Mesh(centerGeometry, centerMaterial);
+				center.position.set(0, 0.5, 0);
+				flower.add(center);
+
+				// Flower petals - colorful and animated
+				const petalColors = [0xffb6c1, 0xdda0dd, 0xf0e68c, 0x98fb98, 0x87ceeb];
+
+				for (let i = 0; i < 8; i++) {
+					const angle = (i / 8) * Math.PI * 2;
+					const x = Math.cos(angle) * 0.6;
+					const z = Math.sin(angle) * 0.6;
+
+					const petalGeometry = new THREE.BoxGeometry(0.8, 0.1, 0.3);
+					const petalMaterial = new THREE.MeshLambertMaterial({
+						color: petalColors[i % petalColors.length],
+					});
+					const petal = new THREE.Mesh(petalGeometry, petalMaterial);
+
+					petal.position.set(x, 0.5, z);
+					petal.rotation.y = angle;
+					flower.add(petal);
+				}
+
+				// Leaves
+				const leafGeometry = new THREE.BoxGeometry(0.6, 0.05, 0.3);
+				const leafMaterial = new THREE.MeshLambertMaterial({ color: 0x32cd32 });
+
+				const leaf1 = new THREE.Mesh(leafGeometry, leafMaterial);
+				leaf1.position.set(-0.8, -0.5, 0);
+				leaf1.rotation.z = -0.3;
+				flower.add(leaf1);
+
+				const leaf2 = new THREE.Mesh(leafGeometry, leafMaterial);
+				leaf2.position.set(0.8, -0.8, 0);
+				leaf2.rotation.z = 0.3;
+				flower.add(leaf2);
+
+				return flower;
+			}
+
+			function createFloatingPetals() {
+				const container = document.getElementById('floatingPetals');
+				for (let i = 0; i < 15; i++) {
+					setTimeout(() => {
+						const petal = document.createElement('div');
+						petal.className = 'floating-element';
+						petal.style.fontSize = '2rem';
+						petal.style.left = Math.random() * 100 + '%';
+						petal.style.animationDelay = Math.random() * 8 + 's';
+						petal.style.animationDuration = '12s';
+						petal.style.opacity = '0.4';
+						petal.style.color = 'var(--pink)';
+						petal.textContent = '🌸';
+						container.appendChild(petal);
+
+						setTimeout(() => {
+							petal.remove();
+						}, 12000);
+					}, Math.random() * 8000);
+				}
+			}
+
+			// Initialize fireworks section with advanced animations
+			function initializeFireworksSection() {
+				const canvas = document.getElementById('fireworksCanvas');
+				const ctx = canvas.getContext('2d');
+
+				// Set canvas size
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+
+				// Start fireworks animation
+				startFireworksAnimation(canvas, ctx);
+				createStarsBackground();
+			}
+
+			// Advanced Fireworks Animation
+			function startFireworksAnimation(canvas, ctx) {
+				const particles = [];
+				const colors = [
+					'#FFB6C1',
+					'#DDA0DD',
+					'#F0E68C',
+					'#98FB98',
+					'#87CEEB',
+					'#FFE4E1',
+				];
+
+				class Particle {
+					constructor(x, y, vx, vy, color, size, life) {
+						this.x = x;
+						this.y = y;
+						this.vx = vx;
+						this.vy = vy;
+						this.color = color;
+						this.size = size;
+						this.life = life;
+						this.maxLife = life;
+					}
+
+					update() {
+						this.x += this.vx;
+						this.y += this.vy;
+						this.vy += 0.05; // gravity
+						this.vx *= 0.99; // air resistance
+						this.life--;
+					}
+
+					draw() {
+						const alpha = this.life / this.maxLife;
+						ctx.save();
+						ctx.globalAlpha = alpha;
+						ctx.fillStyle = this.color;
+						ctx.beginPath();
+						ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+						ctx.fill();
+
+						// Add glow effect
+						ctx.globalAlpha = alpha * 0.3;
+						ctx.beginPath();
+						ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
+						ctx.fill();
+						ctx.restore();
+					}
+
+					isDead() {
+						return this.life <= 0;
+					}
+				}
+
+				function createFirework(x, y) {
+					const particleCount = 30 + Math.random() * 20;
+					const color = colors[Math.floor(Math.random() * colors.length)];
+
+					for (let i = 0; i < particleCount; i++) {
+						const angle = (Math.PI * 2 * i) / particleCount;
+						const velocity = 2 + Math.random() * 4;
+
+						particles.push(
+							new Particle(
+								x,
+								y,
+								Math.cos(angle) * velocity,
+								Math.sin(angle) * velocity,
+								color,
+								2 + Math.random() * 3,
+								60
+							)
+						);
+					}
+				}
+
+				function createRandomFirework() {
+					if (Math.random() < 0.03) {
+						const x = Math.random() * canvas.width;
+						const y = Math.random() * canvas.height * 0.6 + canvas.height * 0.1;
+						createFirework(x, y);
+					}
+				}
+
+				function animate() {
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+					// Create random fireworks
+					createRandomFirework();
+
+					// Update and draw particles
+					for (let i = particles.length - 1; i >= 0; i--) {
+						const particle = particles[i];
+						particle.update();
+						particle.draw();
+
+						if (particle.isDead()) {
+							particles.splice(i, 1);
+						}
+					}
+
+					requestAnimationFrame(animate);
+				}
+
+				// Initial burst of fireworks
+				setTimeout(() => {
+					createFirework(canvas.width * 0.2, canvas.height * 0.3);
+					createFirework(canvas.width * 0.8, canvas.height * 0.2);
+					createFirework(canvas.width * 0.5, canvas.height * 0.4);
+				}, 500);
+
+				animate();
+			}
+
+			function createStarsBackground() {
+				const container = document.getElementById('starsBackground');
+				for (let i = 0; i < 50; i++) {
+					const star = document.createElement('div');
+					star.style.position = 'absolute';
+					star.style.width = '2px';
+					star.style.height = '2px';
+					star.style.backgroundColor = 'white';
+					star.style.borderRadius = '50%';
+					star.style.left = Math.random() * 100 + '%';
+					star.style.top = Math.random() * 100 + '%';
+					star.style.animation = `twinkle ${2 + Math.random() * 3}s infinite`;
+					star.style.animationDelay = Math.random() * 5 + 's';
+					container.appendChild(star);
+				}
+			}
+
+			// Enhanced 3D Photo Section
+			function initializePhotoSection() {
+				const container = document.getElementById('photoGrid');
+				container.innerHTML = '';
+				container.className = 'photo-container photo-grid-3d';
+
+				photos.forEach((photo, index) => {
+					const photoCard = document.createElement('div');
+					photoCard.className = 'photo-card fade-in photo-aspect';
+					photoCard.style.animationDelay = `${index * 0.3}s`;
+
+					photoCard.innerHTML = `
+			                 <img src="${photo.url}" alt="${photo.caption}" loading="lazy">
+			                 <div class="photo-overlay">
+			                     <div class="photo-caption">${photo.caption}</div>
+			                 </div>
+			             `;
+
+					// Add click interaction for enhanced 3D effect
+					photoCard.addEventListener('click', () => {
+						create3DPhotoExplosion(photo.caption);
+					});
+
+					container.appendChild(photoCard);
+				});
+
+				// Start floating photo elements
+				createFloatingPhotoElements();
+
+				// Add staggered entrance animation
+				setTimeout(() => {
+					container.style.transform = 'perspective(1000px) rotateX(0deg)';
+				}, 500);
+			}
+
+			// Create floating photo-themed elements
+			function createFloatingPhotoElements() {
+				const photoEmojis = ['📸', '💫', '✨', '🌟', '💖', '🦋', '🌸'];
+				const photoSection = document.getElementById('photos');
+
+				for (let i = 0; i < 12; i++) {
+					setTimeout(() => {
+						const element = document.createElement('div');
+						element.className = 'floating-photo-element';
+						element.style.left = Math.random() * 100 + '%';
+						element.style.animationDelay = Math.random() * 5 + 's';
+						element.style.animationDuration = 8 + Math.random() * 6 + 's';
+						element.textContent =
+							photoEmojis[Math.floor(Math.random() * photoEmojis.length)];
+						photoSection.appendChild(element);
+
+						setTimeout(() => {
+							if (element.parentNode) {
+								element.remove();
+							}
+						}, 14000);
+					}, Math.random() * 3000);
+				}
+			}
+
+			// 3D Photo explosion effect
+			function create3DPhotoExplosion(caption) {
+				const explosionEmojis = ['💫', '✨', '🌟', '💖', '📸'];
+				const photoSection = document.getElementById('photos');
+
+				for (let i = 0; i < 8; i++) {
+					const explosion = document.createElement('div');
+					explosion.style.position = 'fixed';
+					explosion.style.fontSize = '2.5rem';
+					explosion.style.zIndex = '1001';
+					explosion.style.pointerEvents = 'none';
+					explosion.style.left = '50%';
+					explosion.style.top = '50%';
+					explosion.textContent =
+						explosionEmojis[Math.floor(Math.random() * explosionEmojis.length)];
+
+					photoSection.appendChild(explosion);
+
+					const angle = (i / 8) * Math.PI * 2;
+					const distance = 200 + Math.random() * 100;
+					const endX = Math.cos(angle) * distance;
+					const endY = Math.sin(angle) * distance;
+
+					explosion.animate(
+						[
+							{
+								opacity: 0,
+								transform: 'translate(-50%, -50%) scale(0) rotate(0deg)',
+								filter: 'brightness(2)',
+							},
+							{
+								opacity: 1,
+								transform: `translate(calc(-50% + ${endX / 4}px), calc(-50% + ${
+									endY / 4
+								}px)) scale(1.5) rotate(180deg)`,
+								filter: 'brightness(1.5)',
+								offset: 0.3,
+							},
+							{
+								opacity: 0.8,
+								transform: `translate(calc(-50% + ${endX}px), calc(-50% + ${endY}px)) scale(1) rotate(360deg)`,
+								filter: 'brightness(1)',
+								offset: 0.8,
+							},
+							{
+								opacity: 0,
+								transform: `translate(calc(-50% + ${
+									endX * 1.5
+								}px), calc(-50% + ${endY * 1.5}px)) scale(0) rotate(540deg)`,
+								filter: 'brightness(0.5)',
+							},
+						],
+						{
+							duration: 1500,
+							easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+						}
+					).onfinish = () => {
+						explosion.remove();
+					};
+				}
+
+				// Show caption toast
+				showPhotoToast(caption);
+			}
+
+			// Photo caption toast
+			function showPhotoToast(caption) {
+				const toast = document.createElement('div');
+				toast.style.position = 'fixed';
+				toast.style.top = '20px';
+				toast.style.right = '20px';
+				toast.style.background =
+					'linear-gradient(135deg, rgba(255,182,193,0.95), rgba(221,160,221,0.95))';
+				toast.style.color = 'white';
+				toast.style.padding = '15px 25px';
+				toast.style.borderRadius = '25px';
+				toast.style.fontFamily = '"Pacifico", cursive';
+				toast.style.fontSize = '1rem';
+				toast.style.zIndex = '1002';
+				toast.style.backdropFilter = 'blur(10px)';
+				toast.style.border = '2px solid rgba(255,255,255,0.3)';
+				toast.style.boxShadow = '0 8px 32px rgba(0,0,0,0.2)';
+				toast.style.transform = 'translateX(100%)';
+				toast.style.transition =
+					'transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+				toast.textContent = `💖 ${caption}`;
+
+				document.body.appendChild(toast);
+
+				setTimeout(() => {
+					toast.style.transform = 'translateX(0)';
+				}, 100);
+
+				setTimeout(() => {
+					toast.style.transform = 'translateX(100%)';
+					setTimeout(() => {
+						if (toast.parentNode) {
+							toast.remove();
+						}
+					}, 500);
+				}, 3000);
+			}
+
+			// Final surprise section
+			function sendHug() {
+				const content = document.getElementById('surpriseContent');
+
+				content.innerHTML = `
+				<h2 class="display-3 font-dancing text-slate-700 mb-4 fade-in">
+							You Made It to the End! 🌟
+						</h2>
+						<p
+							class="h5 text-slate-700 mb-5 fade-in"
+							style="animation-delay: 0.5s"
+						>
+							Thank you for taking this magical journey with me. You deserve all
+							the love and happiness in the world.
+						</p>
+			             <div class="card border-0 shadow-lg" style="background: rgba(255,255,255,0.8); backdrop-filter: blur(10px);">
+			                 <div class="card-body p-4">
+			                     <div style="font-size: 4rem; margin-bottom: 1rem;">🤗</div>
+			                     <h3 class="font-dancing text-slate-700 mb-3">Hug Received!</h3>
+			                     <p class="text-slate-700 mb-4">
+			                         Sending you the biggest virtual hug right back! You're absolutely amazing, and I hope your birthday is as wonderful as you are.
+			                     </p>
+			                     <button class="btn btn-outline-secondary me-3" onclick="restartJourney()">
+			                         Experience Again ✨
+			                     </button>
+			                 </div>
+			             </div>
+			         `;
+				document.getElementById('poet-section').style.display = 'none';
+
+				// Create flying hearts animation
+				createFlyingHearts();
+			}
+
+			function createFlyingHearts() {
+				const container = document.getElementById('flyingHearts');
+				for (let i = 0; i < 20; i++) {
+					setTimeout(() => {
+						const heart = document.createElement('div');
+						heart.style.position = 'fixed';
+						heart.style.fontSize = '3rem';
+						heart.style.zIndex = '999';
+						heart.style.pointerEvents = 'none';
+						heart.style.left = Math.random() * window.innerWidth + 'px';
+						heart.style.top = window.innerHeight + 'px';
+						heart.textContent = '💖';
+						heart.className = 'heart-burst';
+
+						container.appendChild(heart);
+
+						setTimeout(() => {
+							heart.remove();
+						}, 2000);
+					}, i * 100);
+				}
+			}
+
+			// Start continuous animations
+			function startAnimations() {
+				// Continuous floating hearts for landing
+				setInterval(() => {
+					if (currentSection === 0) {
+						createFloatingHearts();
+					}
+				}, 5000);
+
+				// Background decorative elements for final section
+				createBackgroundDecor();
+			}
+
+			function createBackgroundDecor() {
+				const container = document.getElementById('backgroundDecor');
+				for (let i = 0; i < 12; i++) {
+					const element = document.createElement('div');
+					element.style.position = 'absolute';
+					element.style.fontSize = '2rem';
+					element.style.color = 'rgba(255, 182, 193, 0.3)';
+					element.style.left = Math.random() * 100 + '%';
+					element.style.top = Math.random() * 100 + '%';
+					element.style.animation = `pulse ${4 + Math.random() * 2}s infinite`;
+					element.style.animationDelay = Math.random() * 3 + 's';
+					element.textContent = '✨';
+					container.appendChild(element);
+				}
+			}
+
+			// Handle window resize for canvas elements
+			window.addEventListener('resize', () => {
+				const fireworksCanvas = document.getElementById('fireworksCanvas');
+				if (fireworksCanvas && currentSection === 3) {
+					fireworksCanvas.width = window.innerWidth;
+					fireworksCanvas.height = window.innerHeight;
+				}
+			});
+
+			// Blur Content on Tab Change or Window Blur (Desktop Only)
+			document.addEventListener('visibilitychange', function () {
+				if (document.hidden) {
+					document.body.style.filter = 'blur(10px)';
+				} else {
+					document.body.style.filter = 'none';
+				}
+			});
+		</script>
+
+		<!-- Block Dev Tools Shortcuts from keyBoard-->
+		<script>
+			document.addEventListener('keydown', function (e) {
+				// F12
+				if (e.key === 'F12' || e.keyCode === 123) {
+					e.preventDefault();
+				}
+
+				// Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+				if (
+					(e.ctrlKey || e.metaKey) &&
+					e.shiftKey &&
+					['I', 'J', 'C'].includes(e.key.toUpperCase())
+				) {
+					e.preventDefault();
+				}
+
+				// Ctrl+U (View source)
+				if ((e.ctrlKey || e.metaKey) && e.key.toUpperCase() === 'U') {
+					e.preventDefault();
+				}
+
+				// Ctrl+Shift+K (Firefox web console)
+				if (
+					(e.ctrlKey || e.metaKey) &&
+					e.shiftKey &&
+					e.key.toUpperCase() === 'K'
+				) {
+					e.preventDefault();
+				}
+			});
+		</script>
+	</body>
+</html>
