@@ -263,6 +263,10 @@
 			.flip-card:hover .flip-card-inner {
 				transform: rotateY(180deg);
 			}
+			/* This will be added to simulate flip on touch */
+			.flip-card.touch-active .flip-card-inner {
+   			 transform: rotateY(180deg); /* Flip on touch */
+			}
 
 			/* Floating animations */
 			.floating-element {
@@ -1123,6 +1127,21 @@
 						createFloatingEmoji(moment.emoji);
 					}
 				// }
+
+				// Get all flip cards
+				const flipCards = document.querySelectorAll('.flip-card');
+
+				// Loop through each flip card and add event listeners
+				flipCards.forEach(card => {
+    					card.addEventListener('touchstart', () => {
+        				card.classList.add('touch-active'); // Add class to flip card on touch
+    					});
+
+    					card.addEventListener('touchend', () => {
+        				card.classList.remove('touch-active'); // Remove class to reset on touch end
+    					});
+				});
+
 			}
 
 			function createPageLoadEmojis() {
